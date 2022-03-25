@@ -1,3 +1,3 @@
 export interface INotifier {
-    notifyMessage(datagrams: Array<String>): void;
+  notifyMessage(datagrams: Array<string>): void;
 }

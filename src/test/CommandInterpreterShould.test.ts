@@ -1,48 +1,70 @@
-import {InitializationCommand} from "../main/commands/InitializationCommand";
-import {Coordinate} from "../main/model/Coordinate";
-import {StartingPositionCommand} from "../main/commands/StartingPositionCommand";
-import {Position} from "../main/model/Position";
-import {TurnLeftCommand} from "../main/commands/TurnLeftCommand";
-import {MoveForwardCommand} from "../main/commands/MoveForwardCommand";
-import {TurnRightCommand} from "../main/commands/TurnRightCommand";
-import {CommandInterpreter} from "../main/app/CommandInterpreter";
-import {ICommand} from "../main/commands/ICommand";
+import { CommandInterpreter } from "../main/app/CommandInterpreter";
+import { InitializationCommand } from "../main/commands/InitializationCommand";
+import { MoveForwardCommand } from "../main/commands/MoveForwardCommand";
+import { StartingPositionCommand } from "../main/commands/StartingPositionCommand";
+import { TurnLeftCommand } from "../main/commands/TurnLeftCommand";
+import { TurnRightCommand } from "../main/commands/TurnRightCommand";
+import { Commands } from "../main/model/Commands";
+import { Coordinate } from "../main/model/Coordinate";
+import { Position } from "../main/model/Position";
 
-describe('Command Interpreter ', () => {
+describe("Command Interpreter ", () => {
+  it.each([
+    [
+      "5 5\n3 3 E\nLFLFR",
+      {
+        initializationCommand: new InitializationCommand(new Coordinate(5, 5)),
+        startingPositionCommand: new StartingPositionCommand(
+          new Position(3, 3, "E")
+        ),
+        movementCommands: [
+          new TurnLeftCommand(),
+          new MoveForwardCommand(),
+          new TurnLeftCommand(),
+          new MoveForwardCommand(),
+          new TurnRightCommand(),
+        ],
+      },
+    ],
+    [
+      "5 5\n3 3 E\nL",
+      {
+        initializationCommand: new InitializationCommand(new Coordinate(5, 5)),
+        startingPositionCommand: new StartingPositionCommand(
+          new Position(3, 3, "E")
+        ),
+        movementCommands: [new TurnLeftCommand()],
+      },
+    ],
+    [
+      "5 5\n3 3 E\nF",
+      {
+        initializationCommand: new InitializationCommand(new Coordinate(5, 5)),
+        startingPositionCommand: new StartingPositionCommand(
+          new Position(3, 3, "E")
+        ),
+        movementCommands: [new MoveForwardCommand()],
+      },
+    ],
+    [
+      "5 5\n3 3 E\nR",
+      {
+        initializationCommand: new InitializationCommand(new Coordinate(5, 5)),
+        startingPositionCommand: new StartingPositionCommand(
+          new Position(3, 3, "E")
+        ),
+        movementCommands: [new TurnRightCommand()],
+      },
+    ],
+  ] as Array<[string, Commands]>)(
+    "should parse commands",
+    (inputCommand: string, expectedCommands: Commands) => {
+      const commandInterpreter: CommandInterpreter = new CommandInterpreter();
+      const commands: Commands = commandInterpreter.translate(
+        inputCommand.trim()
+      );
 
-    beforeEach(() => {
-
-    })
-
-    it.each([
-        ["5 5\n3 3 E\nLFLFR", [
-            new InitializationCommand(new Coordinate(5, 5)),
-            new StartingPositionCommand(new Position(3, 3, "E")),
-            new TurnLeftCommand(),
-            new MoveForwardCommand(),
-            new TurnLeftCommand(),
-            new MoveForwardCommand(),
-            new TurnRightCommand()
-        ]],
-        ["5 5\n3 3 E\nL", [
-            new InitializationCommand(new Coordinate(5, 5)),
-            new StartingPositionCommand(new Position(3, 3, "E")),
-            new TurnLeftCommand()
-        ]],
-        ["5 5\n3 3 E\nF", [
-            new InitializationCommand(new Coordinate(5, 5)),
-            new StartingPositionCommand(new Position(3, 3, "E")),
-            new MoveForwardCommand()
-        ]],
-        ["5 5\n3 3 E\nR", [
-            new InitializationCommand(new Coordinate(5, 5)),
-            new StartingPositionCommand(new Position(3, 3, "E")),
-            new TurnRightCommand()
-        ]]
-    ])('should parse commands', (inputCommand: string, expectedCommands) => {
-        let commandInterpreter: CommandInterpreter = new CommandInterpreter();
-        let commands: Array<ICommand> = commandInterpreter.translate(inputCommand.trim());
-
-        expect(commands).toStrictEqual(expectedCommands);
-    })
-})
+      expect(commands).toStrictEqual(expectedCommands);
+    }
+  );
+});

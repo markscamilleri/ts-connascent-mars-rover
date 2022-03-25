@@ -1,17 +1,17 @@
-import {Position} from "../model/Position";
-import {ICommand} from "../commands/ICommand";
+import { Commands } from "../model/Commands";
+import { Position } from "../model/Position";
 
 export class MarsRoverEngine {
-    private position: Position = new Position(0, 0, "N");
+  private position: Position = new Position(0, 0, "N");
 
-    execute(commands: Array<ICommand>): void {
-        for (let command of commands) {
-            this.position = command.execute(this.position);
-        }
+  execute({ startingPositionCommand, movementCommands }: Commands): void {
+    this.position = startingPositionCommand.execute(this.position);
+
+    for (const movementCommand of movementCommands) {
+      this.position = movementCommand.execute(this.position);
     }
-    getPosition(): Position {
-        return this.position;
-    }
-
-
+  }
+  getPosition(): Position {
+    return this.position;
+  }
 }

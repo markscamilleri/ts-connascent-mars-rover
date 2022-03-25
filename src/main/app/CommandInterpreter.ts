@@ -1,64 +1,78 @@
-import { Direction } from "../model/Direction";
 import { ICommand } from "../commands/ICommand";
-import { TurnLeftCommand } from "../commands/TurnLeftCommand";
-import { MoveForwardCommand } from "../commands/MoveForwardCommand";
-import { TurnRightCommand } from "../commands/TurnRightCommand";
 import { InitializationCommand } from "../commands/InitializationCommand";
-import { Coordinate } from "../model/Coordinate";
-import { Position } from "../model/Position";
+import { MoveForwardCommand } from "../commands/MoveForwardCommand";
 import { StartingPositionCommand } from "../commands/StartingPositionCommand";
+import { TurnLeftCommand } from "../commands/TurnLeftCommand";
+import { TurnRightCommand } from "../commands/TurnRightCommand";
+import { Commands } from "../model/Commands";
+import { Coordinate } from "../model/Coordinate";
+import { Direction } from "../model/Direction";
+import { Position } from "../model/Position";
 
 export class CommandInterpreter {
-    private letterToDirection: Map<string, Direction> = new Map([
-        ["N", Direction.NORTH()],
-        ["E", Direction.EAST()],
-        ["S", Direction.SOUTH()],
-        ["W", Direction.WEST()]
-    ]);
+  private letterToDirection: Map<string, Direction> = new Map([
+    ["N", Direction.NORTH()],
+    ["E", Direction.EAST()],
+    ["S", Direction.SOUTH()],
+    ["W", Direction.WEST()],
+  ]);
 
-    translate(commands: string): Array<ICommand> { //execution order
-        let allCommands = new Array<ICommand>();
-        allCommands.push(this.getInitializationCommand(commands));
-        allCommands.push(this.getStartingPositionCommand(commands));
-        allCommands.push(...this.getMovementCommands(commands));
+  translate(commands: string): Commands {
+    return {
+      initializationCommand: this.getInitializationCommand(commands),
+      startingPositionCommand: this.getStartingPositionCommand(commands),
+      movementCommands: this.getMovementCommands(commands),
+    };
+  }
 
-        return allCommands;
+  private getMovementCommands(commands: string): ICommand[] {
+    const movementCommands = new Array<ICommand>();
+    const lines: string[] = commands.split("\n");
+    for (const command of Array.from(lines[2])) {
+      //Position
+      switch (
+        command //Meaning
+      ) {
+        case "L":
+          movementCommands.push(new TurnLeftCommand());
+          break;
+        case "F":
+          movementCommands.push(new MoveForwardCommand());
+          break;
+        case "R":
+          movementCommands.push(new TurnRightCommand());
+          break;
+      }
     }
+    return movementCommands;
+  }
 
-    private getMovementCommands(commands: string): ICommand[] {
-        let movementCommands = new Array<ICommand>();
-        let lines: string[] = commands.split("\n");
-        for (let command of Array.from(lines[2])) { //Position
-            switch (command) { //Meaning
-                case 'L':
-                    movementCommands.push(new TurnLeftCommand());
-                    break;
-                case 'F':
-                    movementCommands.push(new MoveForwardCommand());
-                    break;
-                case 'R':
-                    movementCommands.push(new TurnRightCommand());
-                    break;
-            }
-        }
-        return movementCommands;
-    }
+  private getInitializationCommand(commands: string): InitializationCommand {
+    const lines: string[] = commands.split("\n");
+    const topRight: string[] = lines[0].split(" "); //Position
+    return new InitializationCommand(
+      new Coordinate(parseInt(topRight[0]), parseInt(topRight[1]))
+    );
+  }
 
-    private getInitializationCommand(commands: string): InitializationCommand {
-        let lines: string[] = commands.split("\n");
-        let topRight: string[] = lines[0].split(" "); //Position
-        return new InitializationCommand(new Coordinate(parseInt(topRight[0]), parseInt(topRight[1])));
-    }
+  private getStartingPositionCommand(
+    commands: string
+  ): StartingPositionCommand {
+    const lines: string[] = commands.split("\n"); // position
+    const coords: string[] = lines[1].split(" "); // position
 
-    private getStartingPositionCommand(commands: string): StartingPositionCommand {
-        let lines: string[] = commands.split("\n"); // position
-        let coords: string[] = lines[1].split(" "); // position
-
-        let coordinate: Coordinate = new Coordinate(parseInt(coords[0]), parseInt(coords[1])); // position
-        let direction: Direction = <Direction>this.letterToDirection.get(coords[2]); // position
-        let position: Position = new Position(coordinate.x, coordinate.y, direction.toString()); //Type
-        return new StartingPositionCommand(position);
-    }
-
-
+    const coordinate: Coordinate = new Coordinate(
+      parseInt(coords[0]),
+      parseInt(coords[1])
+    ); // position
+    const direction: Direction = <Direction>(
+      this.letterToDirection.get(coords[2])
+    ); // position
+    const position: Position = new Position(
+      coordinate.x,
+      coordinate.y,
+      direction.toString()
+    ); //Type
+    return new StartingPositionCommand(position);
+  }
 }

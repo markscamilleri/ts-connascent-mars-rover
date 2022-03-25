@@ -1,3 +1,3 @@
 export interface INasaAntenna {
-    received(datagrams: String []): void;
+  received(datagrams: string[]): void;
 }

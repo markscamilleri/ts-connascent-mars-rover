@@ -1,5 +1,5 @@
-import {IProcessMessages} from "./IProcessMessages";
+import { IProcessMessages } from "./IProcessMessages";
 
 export interface IReadMessages {
-    callback(messageProcessor: IProcessMessages): void;
+  callback(messageProcessor: IProcessMessages): void;
 }

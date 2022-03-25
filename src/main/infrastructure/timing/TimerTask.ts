@@ -1,5 +1,6 @@
-export interface TimerTask { // Manual
-    run(): void;
+export interface TimerTask {
+  // Manual
+  run(): void;
 
-    cancel(): void;
+  cancel(): void;
 }

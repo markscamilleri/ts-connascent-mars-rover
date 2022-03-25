@@ -1,3 +1,3 @@
 export interface IProcessMessages {
-    process(message: String): void;
+  process(message: string): void;
 }

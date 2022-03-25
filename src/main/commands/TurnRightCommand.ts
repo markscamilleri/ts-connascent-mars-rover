@@ -1,9 +1,8 @@
-import {ICommand} from "./ICommand";
-import {Position} from "../model/Position";
+import { Position } from "../model/Position";
+import { IMovementCommand } from "./ICommand";
 
-export class TurnRightCommand implements ICommand {
-    execute(position: Position): Position {
-        return position.turnRight();
-    }
-
+export class TurnRightCommand implements IMovementCommand {
+  execute(position: Position): Position {
+    return position.turnRight();
+  }
 }

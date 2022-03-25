@@ -1,9 +1,8 @@
-import {ICommand} from "./ICommand";
-import {Position} from "../model/Position";
+import { Position } from "../model/Position";
+import { IMovementCommand } from "./ICommand";
 
-export class MoveForwardCommand implements ICommand {
-    execute(position: Position): Position {
-        return position.moveForward();
-    }
-
+export class MoveForwardCommand implements IMovementCommand {
+  execute(position: Position): Position {
+    return position.moveForward();
+  }
 }

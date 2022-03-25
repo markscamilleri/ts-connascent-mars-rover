@@ -1,23 +1,24 @@
-import {INasaAntenna} from "../main/infrastructure/spacecomm/INasaAntenna";
-import {MarsRoverSender} from "../main/infrastructure/spacecomm/MarsRoverSender";
-import {mock} from "jest-mock-extended";
+import { mock } from "jest-mock-extended";
 
-describe('Test: MarsRoverSender', () => {
-    it('should send message correctly', () => {
-        const nasaAntenna: INasaAntenna = mock<INasaAntenna>();
-        let marsRoverSender: MarsRoverSender = new MarsRoverSender(nasaAntenna);
+import { INasaAntenna } from "../main/infrastructure/spacecomm/INasaAntenna";
+import { MarsRoverSender } from "../main/infrastructure/spacecomm/MarsRoverSender";
 
-        marsRoverSender.send("6 99 S");
+describe("Test: MarsRoverSender", () => {
+  it("should send message correctly", () => {
+    const nasaAntenna: INasaAntenna = mock<INasaAntenna>();
+    const marsRoverSender: MarsRoverSender = new MarsRoverSender(nasaAntenna);
 
-        expect(nasaAntenna.received).toBeCalledWith(["X6", "Y99", "DS"])
-    });
+    marsRoverSender.send("6 99 S");
 
-    it('should send error message', () => {
-        const nasaAntenna: INasaAntenna = mock<INasaAntenna>();
-        let marsRoverSender: MarsRoverSender = new MarsRoverSender(nasaAntenna);
+    expect(nasaAntenna.received).toBeCalledWith(["X6", "Y99", "DS"]);
+  });
 
-        marsRoverSender.sendError();
+  it("should send error message", () => {
+    const nasaAntenna: INasaAntenna = mock<INasaAntenna>();
+    const marsRoverSender: MarsRoverSender = new MarsRoverSender(nasaAntenna);
 
-        expect(nasaAntenna.received).toBeCalledWith(["ER"])
-    });
-})
+    marsRoverSender.sendError();
+
+    expect(nasaAntenna.received).toBeCalledWith(["ER"]);
+  });
+});

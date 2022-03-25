@@ -1,17 +1,14 @@
-import {ICommand} from "./ICommand";
-import {Position} from "../model/Position";
+import { Position } from "../model/Position";
+import { ICommand } from "./ICommand";
 
 export class StartingPositionCommand implements ICommand {
+  private startingPosition: Position;
 
-    private startingPosition: Position;
+  constructor(startingPosition: Position) {
+    this.startingPosition = startingPosition;
+  }
 
-
-    constructor(startingPosition: Position) {
-        this.startingPosition = startingPosition;
-    }
-
-    execute(position: Position): Position {
-        return this.startingPosition;
-    }
-
+  execute(position: Position): Position {
+    return this.startingPosition;
+  }
 }

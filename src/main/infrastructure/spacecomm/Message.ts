@@ -1,57 +1,57 @@
-import {format} from "util";
+import { format } from "util";
 
 export class Message {
+  private x!: string;
+  private y!: string;
+  private commandsCount!: number;
+  private direction!: string;
+  private positionMessage: string; //Type
+  private commandsMessage: string; //Type
 
-    private x!: string;
-    private y!: string;
-    private commandsCount!: number;
-    private direction!: string;
-    private positionMessage: string; //Type
-    private commandsMessage: string; //Type
+  constructor(datagrams: Array<string>) {
+    this.positionMessage = this.parsePosition(datagrams);
+    this.commandsMessage = this.parseCommands(datagrams);
+  }
 
-
-    constructor(datagrams: Array<string>) {
-        this.positionMessage = this.parsePosition(datagrams);
-        this.commandsMessage = this.parseCommands(datagrams);
+  private parsePosition(datagrams: Array<string>) {
+    // Meaning, Name
+    for (const datagram of datagrams) {
+      if (datagram.startsWith("X")) this.x = datagram.substring(1);
+      if (datagram.startsWith("Y")) this.y = datagram.substring(1);
+      if (datagram.startsWith("D")) this.direction = datagram.substring(1);
+      if (datagram.startsWith("M"))
+        this.commandsCount = Number.parseInt(datagram.substring(1));
     }
+    return format("100 100\n%s %s %s\n", this.x, this.y, this.direction); // Type
+  }
 
-    private parsePosition(datagrams: Array<string>) {
-        // Meaning, Name
-        for (let datagram of datagrams) {
-            if(datagram.startsWith("X"))
-                this.x = datagram.substring(1);
-            if(datagram.startsWith("Y"))
-                this.y = datagram.substring(1);
-            if(datagram.startsWith("D"))
-                this.direction = datagram.substring(1);
-            if(datagram.startsWith("M"))
-                this.commandsCount = Number.parseInt(datagram.substring(1));
+  public toString(): string {
+    return format("%s%s", this.positionMessage, this.commandsMessage);
+  }
+
+  public isValid(): boolean {
+    return (
+      this.x != undefined &&
+      this.y != undefined &&
+      this.direction != undefined &&
+      this.commandsCount != undefined &&
+      this.commandsMessage.length === this.commandsCount
+    );
+  } // Value (no boundaries defined)
+
+  private parseCommands(datagrams: Array<string>) {
+    let commandMessage = "";
+    for (
+      let commandNumber = 1;
+      commandNumber <= this.commandsCount;
+      commandNumber++
+    ) {
+      for (const datagram of datagrams) {
+        if (datagram.startsWith(commandNumber.toString())) {
+          commandMessage += datagram.substring(1);
         }
-        return format("100 100\n%s %s %s\n", this.x, this.y, this.direction); // Type
+      }
     }
-
-    public toString(): string {
-        return format("%s%s", this.positionMessage, this.commandsMessage)
-    }
-
-    public isValid(): boolean {
-        return this.x != undefined &&
-            this.y != undefined &&
-            this.direction != undefined &&
-            this.commandsCount != undefined &&
-            this.commandsMessage.length === this.commandsCount;
-    } // Value (no boundaries defined)
-
-
-    private parseCommands(datagrams: Array<string>) {
-        let commandMessage: string = "";
-        for (let commandNumber = 1; commandNumber <= this.commandsCount; commandNumber++) {
-            for (let datagram of datagrams) {
-                if(datagram.startsWith(commandNumber.toString())) {
-                    commandMessage += datagram.substring(1);
-                }
-            }
-        }
-        return commandMessage; // Type
-    }
+    return commandMessage; // Type
+  }
 }

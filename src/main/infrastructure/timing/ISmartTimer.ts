@@ -1,6 +1,6 @@
-import {INotifier} from "../INotifier";
+import { INotifier } from "../INotifier";
 
 export interface ISmartTimer {
-    waitMillisecond(milliseconds: number): ISmartTimer;
-    beforeDoing(notifyMessage: INotifier, datagrams: Array<string>): ISmartTimer;
+  waitMillisecond(milliseconds: number): ISmartTimer;
+  beforeDoing(notifyMessage: INotifier, datagrams: Array<string>): ISmartTimer;
 }

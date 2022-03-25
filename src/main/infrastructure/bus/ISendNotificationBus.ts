@@ -1,3 +1,3 @@
 export interface ISendNotificationBus {
-    NotifyExecution(finalState: string): void;
+  NotifyExecution(finalState: string): void;
 }

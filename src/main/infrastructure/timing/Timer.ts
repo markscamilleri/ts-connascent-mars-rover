@@ -1,17 +1,15 @@
-import {TimerTask} from "./TimerTask";
+import { TimerTask } from "./TimerTask";
 
 export class Timer {
+  private timeout!: NodeJS.Timer;
 
-    private timeout!: NodeJS.Timer;
+  schedule(task: TimerTask, millisecondsToWait: number): void {
+    this.timeout = setTimeout(function () {
+      task.run();
+    }, millisecondsToWait);
+  }
 
-
-    schedule(task: TimerTask, millisecondsToWait: number): void {
-        this.timeout = setTimeout(function() {
-            task.run();
-        }, millisecondsToWait);
-    }
-
-    cancel(): void {
-        clearTimeout(this.timeout);
-    }
+  cancel(): void {
+    clearTimeout(this.timeout);
+  }
 }
