@@ -1,14 +1,14 @@
-import {ISmartTimer} from "./ISmartTimer";
-import {INotifier} from "../INotifier";
-import {Timer} from "./Timer";
-import {TimerTask} from "./TimerTask";
+import { ISmartTimer } from "./ISmartTimer";
+import { INotifier } from "../INotifier";
+import { Timer } from "./Timer";
+import { TimerTask } from "./TimerTask";
 
 export class SmartTimer implements ISmartTimer {
     private millisecondsToWait!: number;
     private isRunning: boolean = false;
     private timer: Timer = new Timer();
     private task!: TimerTask;
-    public  notifier: INotifier = new class implements INotifier {
+    public notifier: INotifier = new class implements INotifier {
         notifyMessage(data: Array<string>): void {
         }
     }
@@ -19,7 +19,7 @@ export class SmartTimer implements ISmartTimer {
         return this;
     }
 
-    beforeDoing(notifier: INotifier, datagrams: Array<string>): ISmartTimer {
+    beforeDoing(notifier: INotifier, datagrams: Array<string>): ISmartTimer { // algorithm
         this.notifier = notifier;
         const self = this;
         this.task = new class implements TimerTask {
@@ -36,7 +36,7 @@ export class SmartTimer implements ISmartTimer {
     }
 
     private reset(): ISmartTimer {
-        if( this.task != undefined) {
+        if (this.task != undefined) {
             this.task.cancel();
         }
         return this;
