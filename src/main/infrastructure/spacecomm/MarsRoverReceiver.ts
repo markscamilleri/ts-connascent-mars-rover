@@ -1,8 +1,8 @@
-import {IWriteToServiceBus} from "../bus/IWriteToServiceBus";
-import {IMessageReceivedBus} from "../bus/IMessageReceivedBus";
-import {Message} from "./Message";
-import {SmartTimer} from "../timing/SmartTimer";
-import {INotifier} from "../INotifier";
+import { IWriteToServiceBus } from "../bus/IWriteToServiceBus";
+import { IMessageReceivedBus } from "../bus/IMessageReceivedBus";
+import { Message } from "./Message";
+import { SmartTimer } from "../timing/SmartTimer";
+import { INotifier } from "../INotifier";
 
 export class MarsRoverReceiver implements IWriteToServiceBus {
     private marsRoverServiceBus!: IMessageReceivedBus;
@@ -15,7 +15,7 @@ export class MarsRoverReceiver implements IWriteToServiceBus {
         }
         notifyMessage(data: Array<string>): void {
             this.receiver.notifyMessage2(data);
-        }
+        } // Order
     }(this);
     private MAX_DELAY_MILLISECONDS: number = 3000;
 
@@ -28,7 +28,7 @@ export class MarsRoverReceiver implements IWriteToServiceBus {
 
         let message: Message = new Message(this.datagrams);
 
-        if (message.isValid()) {
+        if (message.isValid()) { // alogorithm
             this.marsRoverServiceBus.NotifyMessageReceived(message.toString());
             return;
         }
@@ -39,7 +39,7 @@ export class MarsRoverReceiver implements IWriteToServiceBus {
 
     private notifyMessage2(datagrams: Array<string>): void {
         let message: Message = new Message(datagrams);
-        if(message.isValid()) {
+        if (message.isValid()) { // alogorithm
             this.marsRoverServiceBus.NotifyMessageReceived(message.toString());
             return;
         }
