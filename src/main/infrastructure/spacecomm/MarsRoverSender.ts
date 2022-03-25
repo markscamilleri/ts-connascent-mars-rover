@@ -15,13 +15,13 @@ export class MarsRoverSender implements ISendNotifications {
         marsRoverServiceBus.trigger(this);
     }
 
-    send(message: string): void {
+    send(message: string): void { // Type
         let messageParts: string[] = message.split(" ");
         this.nasaAntenna.received([
             "X" + messageParts[0],
             "Y" + messageParts[1],
             "D" + messageParts[2]
-        ])
+        ]) // Positions, Meaning
     }
 
     sendError(): void {

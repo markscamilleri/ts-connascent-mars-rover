@@ -6,8 +6,8 @@ export class Message {
     private y!: string;
     private commandsCount!: number;
     private direction!: string;
-    private positionMessage: string;
-    private commandsMessage: string;
+    private positionMessage: string; //Type
+    private commandsMessage: string; //Type
 
 
     constructor(datagrams: Array<string>) {
@@ -16,6 +16,7 @@ export class Message {
     }
 
     private parsePosition(datagrams: Array<string>) {
+        // Meaning, Name
         for (let datagram of datagrams) {
             if(datagram.startsWith("X"))
                 this.x = datagram.substring(1);
@@ -26,7 +27,7 @@ export class Message {
             if(datagram.startsWith("M"))
                 this.commandsCount = Number.parseInt(datagram.substring(1));
         }
-        return format("100 100\n%s %s %s\n", this.x, this.y, this.direction);
+        return format("100 100\n%s %s %s\n", this.x, this.y, this.direction); // Type
     }
 
     public toString(): string {
@@ -39,7 +40,7 @@ export class Message {
             this.direction != undefined &&
             this.commandsCount != undefined &&
             this.commandsMessage.length === this.commandsCount;
-    }
+    } // Value (no boundaries defined)
 
 
     private parseCommands(datagrams: Array<string>) {
@@ -51,6 +52,6 @@ export class Message {
                 }
             }
         }
-        return commandMessage;
+        return commandMessage; // Type
     }
 }
