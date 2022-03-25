@@ -36,7 +36,7 @@ export class SmartTimer implements ISmartTimer {
   }
 
   private reset(): ISmartTimer {
-    if (this.task != undefined) {
+    if (this.task !== undefined) {
       this.task.cancel();
     }
     return this;

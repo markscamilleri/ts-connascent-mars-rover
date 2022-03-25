@@ -31,10 +31,10 @@ export class Message {
 
   public isValid(): boolean {
     return (
-      this.x != undefined &&
-      this.y != undefined &&
-      this.direction != undefined &&
-      this.commandsCount != undefined &&
+      this.x !== undefined &&
+      this.y !== undefined &&
+      this.direction !== undefined &&
+      this.commandsCount !== undefined &&
       this.commandsMessage.length === this.commandsCount
     );
   } // Value (no boundaries defined)
